@@ -5,6 +5,7 @@ import ComputerPlayer from '../models/computerPlayer.js';
 // import {showRollDiceBtn, showEndTurnBnt} from './callbacks.js';
 import {readFromStorage, saveToStorage} from '../modules/storage.js';
 import Turn from '../models/turn.js';
+import {calculateAmountOfPointsForCombos} from './comboRules.js';
 
 function initializeCompPlayer() {
   const computerPlayer = new ComputerPlayer;
@@ -29,24 +30,23 @@ function setCompNameToTurn() {
 }
 
 function chooseBestComboOption() {
-  const currentTurn = readFromStorage('currentTurn');
-  console.log(currentTurn.dices);
 }
 
-function compThrowingDices() {
+function compThrowingDicesActions() {
   eraseDicesContainer();
   deleteFromStorage('currentTurn');
   rollDice();
   setCompNameToTurn();
   chooseBestComboOption();
   alert('Compuer turn');
+  calculateAmountOfPointsForCombos();
   //   ***
 //   showEndTurnBnt();
 //   showRollDiceBtn();
 }
 
 function compTurnTime() {
-  compThrowingDices();
+  compThrowingDicesActions();
 }
 
 export {compTurnTime, initializeCompPlayer};

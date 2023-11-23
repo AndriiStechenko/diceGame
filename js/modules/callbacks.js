@@ -8,6 +8,7 @@ import {eraseDicesContainer, drawEmptyDices, makeDiceSectionVisible} from './dic
 import {showModal, checkedWhatComboAlreadyUsed, makeUsedBtnInCauruselClickeble} from './comboCaruselModule.js';
 import {showEndGameModal, hideEndGameModal} from './endGameModule.js';
 import {compTurnTime, initializeCompPlayer} from './computerPlayer.js';
+import {isComboOne, calculateComboOnePoints} from './comboRules.js';
 
 const startGameBtn = document.getElementById('start-game-btn');
 const rollDiceBtn = document.getElementById('roll-dice-btn');
@@ -133,6 +134,8 @@ function endTurnBtnActions() {
     showEndGameModal();
   }
   compTurnTime();
+  // isComboOne();
+  // calculateComboOnePoints();
 }
 
 function startNewGameActionsFromModal() {
