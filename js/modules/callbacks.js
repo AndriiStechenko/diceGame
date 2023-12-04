@@ -35,7 +35,8 @@ function showRollDiceBtn() {
 }
 
 function toggleVisebilityStartGameBtn() {
-  startGameBtn.classList.toggle('invisible');
+  // startGameBtn.classList.toggle('invisible');
+  startGameBtn.style.display = 'none';
 }
 
 function hidePlayerNameHolder() {
