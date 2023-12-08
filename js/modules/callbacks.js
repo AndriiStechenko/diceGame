@@ -2,13 +2,12 @@ import {deleteFromStorage, readFromStorage} from './storage.js';
 import {setDiceScoreToTurn} from './turnInitialization.js';
 import {submitPlayersNameFormModule, playerIsKnown, changeTextInPlayerNameHolder} from './playerNameGetterModule.js';
 import {showNewPlayerFormModal} from './playerNameGetterModule.js';
-import {initializeScoreTable, showScoreTable, createScoreTable, setPlayerTurnsInfoToScoreTable, createResultTable} from './scoreTableInitialization.js';
+import {initializeScoreTable, showScoreTable, createScoreTable, setPlayerTurnsInfoToScoreTable, createResultTable, setComputerTurnsInfoToScoreTable} from './scoreTableInitialization.js';
 import {rollDice} from './actions.js';
 import {eraseDicesContainer, drawEmptyDices, makeDiceSectionVisible} from './dicesDrawer.js';
 import {showModal, checkedWhatComboAlreadyUsed, makeUsedBtnInCauruselClickeble} from './comboCaruselModule.js';
-import {showEndGameModal, hideEndGameModal} from './endGameModule.js';
+import {showEndGameModal, hideEndGameModal, checkWhoIsWinner} from './endGameModule.js';
 import {compTurnTime, initializeCompPlayer} from './computerPlayer.js';
-import {isComboOne, calculateComboOnePoints} from './comboRules.js';
 
 const startGameBtn = document.getElementById('start-game-btn');
 const rollDiceBtn = document.getElementById('roll-dice-btn');
@@ -35,7 +34,6 @@ function showRollDiceBtn() {
 }
 
 function toggleVisebilityStartGameBtn() {
-  // startGameBtn.classList.toggle('invisible');
   startGameBtn.style.display = 'none';
 }
 
@@ -50,8 +48,6 @@ function showPlayerNameHolder() {
 }
 
 function showEndGameBtn() {
-  // endGameBtn.style.display = '';
-
   endGameBtn.classList.remove('d-none');
   endGameBtn.classList.add('d-flex');
 }
@@ -59,7 +55,6 @@ function showEndGameBtn() {
 function hideEndGameBtn() {
   endGameBtn.classList.remove('d-flex');
   endGameBtn.classList.add('d-none');
-  // endGameBtn.style.display = 'none';
 }
 
 function deleteScoreTableFromPage() {
@@ -70,8 +65,6 @@ function deleteScoreTableFromPage() {
 }
 
 function hideendTurnBtnAndShowRerollBtn() {
-  // showRollDiceBtn();
-  // hideReRollDiceBtn();
   showReRollDiceBtn();
   showEndTurnBnt();
 }
@@ -132,11 +125,12 @@ function endTurnBtnActions() {
   if (currentScoreTable.firstPlayerTurns.length >= 6) {
     showRollDiceBtn();
     showEndTurnBnt();
+    // checkWhoIsWinner();
     showEndGameModal();
   }
   compTurnTime();
-  // isComboOne();
-  // calculateComboOnePoints();
+  createResultTable();
+  // setComputerTurnsInfoToScoreTable();
 }
 
 function startNewGameActionsFromModal() {

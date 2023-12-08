@@ -6,6 +6,8 @@ import ComputerPlayer from '../models/computerPlayer.js';
 import {readFromStorage, saveToStorage} from '../modules/storage.js';
 import Turn from '../models/turn.js';
 import {calculateAmountOfPointsForCombos} from './comboRules.js';
+import {cleanComboValue} from './comboRules.js';
+import {setComputerTurnsInfoToScoreTable} from './scoreTableInitialization.js';
 
 function initializeCompPlayer() {
   const computerPlayer = new ComputerPlayer;
@@ -33,6 +35,7 @@ function chooseBestComboOption() {
 }
 
 function compThrowingDicesActions() {
+  cleanComboValue();
   eraseDicesContainer();
   deleteFromStorage('currentTurn');
   rollDice();
@@ -40,6 +43,7 @@ function compThrowingDicesActions() {
   chooseBestComboOption();
   alert('Compuer turn');
   calculateAmountOfPointsForCombos();
+
   //   ***
 //   showEndTurnBnt();
 //   showRollDiceBtn();
@@ -47,6 +51,7 @@ function compThrowingDicesActions() {
 
 function compTurnTime() {
   compThrowingDicesActions();
+  setComputerTurnsInfoToScoreTable();
 }
 
 export {compTurnTime, initializeCompPlayer};

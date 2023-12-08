@@ -176,9 +176,9 @@
 /* body {
   background: #111;
 } */
-.hidden {
+/* .hidden {
   opacity:0;
-}
+} */
 .console-container {
   font-family:Khula;
   font-size:4em;
@@ -235,12 +235,12 @@
   /* Styles for smaller screens */
   @media only screen and (max-width: 600px) {
     .dice_pic_1, .dice_pic_2, .dice_pic_3, .dice_pic_4, .dice_pic_5, .dice_pic_6 {
-      background-size: 16vh 16vh;
+      background-size: 14vh 14vh;
     }
   
     .main_item {
-      height: 16vh;
-      width: 16vh;
+      height: 14vh;
+      width: 14vh;
     }
   
     .comboModal-carousel {
@@ -253,5 +253,9 @@
   
     .modal-content-player-name-modal {
       width: 40vh;
+    }
+
+    .comboModal-modal{
+      padding-top: 18vh;
     }
   }

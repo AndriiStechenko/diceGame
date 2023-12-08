@@ -1,6 +1,6 @@
 import {readFromStorage} from './storage.js';
 
-const comboValues = [];
+let comboValues = [];
 // let smallStritBolean;
 
 const comboRules = {
@@ -211,7 +211,43 @@ function isOneOfHihghCombinations() {
 
 
 function chooseBigestScoreFomCombo() {
-  console.log(comboValues);
+  _checkIfComboUsed();
+  const bigestScoreFromComboResalt = {combination: null, value: -1};
+
+  comboValues.forEach((combination) => {
+    const key = Object.keys(combination)[0];
+    const value = combination[key];
+
+    if (value > bigestScoreFromComboResalt.value) {
+      bigestScoreFromComboResalt.value = value;
+      bigestScoreFromComboResalt.combination = key;
+    }
+  });
+
+  return bigestScoreFromComboResalt;
+}
+
+function cleanComboValue() {
+  comboValues = [];
+}
+
+function _checkIfComboUsed() {
+  const currentScoreTable = readFromStorage('currentScoreTable');
+  const secondPlayerTurns = currentScoreTable.secondPlayerTurns;
+
+  secondPlayerTurns.forEach((turn) => {
+    const usedCombo = turn.usedCombo;
+
+    // Find the index of the element in comboValues array with the same combination
+    const comboIndex = comboValues.findIndex((combo) => Object.keys(combo)[0] === usedCombo);
+
+    // If the combination is found, remove it from comboValues array
+    if (comboIndex !== -1) {
+      comboValues.splice(comboIndex, 1);
+    }
+  });
+
+  return comboValues;
 }
 
 function calculateAmountOfPointsForCombos() {
@@ -228,8 +264,7 @@ function calculateAmountOfPointsForCombos() {
   isComboSix();
   calculateComboSixPoints();
   isOneOfHihghCombinations();
-
   chooseBigestScoreFomCombo();
 }
 
-export {comboRules, isComboOne, calculateComboOnePoints, calculateAmountOfPointsForCombos};
+export {comboRules, isComboOne, calculateComboOnePoints, calculateAmountOfPointsForCombos, chooseBigestScoreFomCombo, cleanComboValue};

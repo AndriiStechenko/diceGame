@@ -1,5 +1,6 @@
 import ScoreTable from '../models/scoreTable.js';
 import {readFromStorage, saveToStorage} from '../modules/storage.js';
+import {chooseBigestScoreFomCombo} from './comboRules.js';
 
 function initializeScoreTable() {
   const currentScoreTable = new ScoreTable;
@@ -72,6 +73,27 @@ function setPlayerTurnsInfoToScoreTable() {
     currentScoreTable.firstPlayerTotal = currentTurn.dicesSum;
     currentScoreTable.firstPlayerComboUsed = currentTurn.usedCombo;
     currentScoreTable.firstPlayerTurns.push(currentTurn);
+  }
+
+  saveToStorage('currentScoreTable', currentScoreTable );
+
+  return currentScoreTable;
+}
+
+function setComputerTurnsInfoToScoreTable() {
+  const currentTurn = readFromStorage('currentTurn');
+  const currentScoreTable = readFromStorage('currentScoreTable');
+  const maxScore = chooseBigestScoreFomCombo();
+  currentTurn.dicesSum = maxScore.value;
+  currentTurn.usedCombo = maxScore.combination;
+
+  if (currentScoreTable) {
+    currentScoreTable.secondPlayer = currentTurn.player;
+
+    currentScoreTable.secondPlayerTotal = currentTurn.dicesSum;
+    currentScoreTable.secondPlayerComboUsed = currentTurn.usedCombo;
+
+    currentScoreTable.secondPlayerTurns.push(currentTurn);
   }
 
   saveToStorage('currentScoreTable', currentScoreTable );
@@ -166,4 +188,4 @@ function createResultTable() {
 }
 
 
-export {initializeScoreTable, scoreTableResultSum, showScoreTable, createScoreTable, addPlayerScoreToScoreTable, readScoreTable, setPlayerTurnsInfoToScoreTable, createResultTable};
+export {initializeScoreTable, scoreTableResultSum, showScoreTable, createScoreTable, addPlayerScoreToScoreTable, readScoreTable, setPlayerTurnsInfoToScoreTable, createResultTable, setComputerTurnsInfoToScoreTable};

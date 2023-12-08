@@ -1,9 +1,14 @@
+import {readFromStorage} from './storage.js';
+
 const endGameModal = document.getElementById('endGameModal');
+let winner = null;
 
 function showEndGameModal() {
   endGameModal.style.display = 'flex';
   // Show the modal by adding the "show" class
   endGameModal.classList.add('show');
+  winner = checkWhoIsWinner();
+  consoleText([`Thanks for playing 8)`, 'Game ended', `The winner is ${winner}`], 'text', ['tomato', 'rebeccapurple', 'lightblue']);
 }
 
 function hideEndGameModal() {
@@ -11,7 +16,7 @@ function hideEndGameModal() {
 }
 
 // function([string1, string2],target id,[color1,color2])
-consoleText([`Thanks for playing 8)`, 'Game ended', `You win/loose Player's name'`], 'text', ['tomato', 'rebeccapurple', 'lightblue']);
+// consoleText([`Thanks for playing 8)`, 'Game ended', `The winner is ${winner}`], 'text', ['tomato', 'rebeccapurple', 'lightblue']);
 
 function consoleText(words, id, colors) {
   if (colors === undefined) colors = ['#fff'];
@@ -78,4 +83,43 @@ function showStartNewGameButtonSlowly() {
 // Call the function after a delay of 3 seconds (3000 milliseconds)
 setTimeout(showStartNewGameButtonSlowly, 4000);
 
-export {showEndGameModal, hideEndGameModal};
+function checkWhoIsWinner() {
+  const currentScoreTable = readFromStorage('currentScoreTable');
+
+  // Calculate firstPlayerTotal
+  let firstPlayerTotal = 0;
+  for (const turn of currentScoreTable.firstPlayerTurns) {
+    firstPlayerTotal += turn.dicesSum;
+  }
+
+  // Calculate secondPlayerTotal
+  let secondPlayerTotal = 0;
+  for (const turn of currentScoreTable.secondPlayerTurns) {
+    secondPlayerTotal += turn.dicesSum;
+  }
+
+  // Update the gameResult object
+  currentScoreTable.firstPlayerTotal = firstPlayerTotal;
+  currentScoreTable.secondPlayerTotal = secondPlayerTotal;
+
+  const firstPlayerScore = currentScoreTable.firstPlayerTotal;
+  const secondPlayerScore = currentScoreTable.secondPlayerTotal;
+
+  if (firstPlayerScore > secondPlayerScore) {
+    winner = currentScoreTable.firstPlayer;
+  } else if (secondPlayerScore > firstPlayerScore) {
+    winner = currentScoreTable.secondPlayer;
+  } else {
+    // It's a tie
+    winner = 'It\'s a tie!';
+  }
+
+  console.log(`First Player Total: ${firstPlayerTotal}`);
+  console.log(`Second Player Total: ${secondPlayerTotal}`);
+  console.log('call from endGameModal', currentScoreTable);
+  console.log(winner);
+  return winner;
+}
+
+export {showEndGameModal, hideEndGameModal, checkWhoIsWinner};
+
